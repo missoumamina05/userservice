@@ -1,0 +1,81 @@
+[
+  {
+    "ContainingType": "ResourcesService.Controllers.ResourcesController",
+    "Method": "GetAll",
+    "RelativePath": "api/resources",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ResourcesService.Controllers.ResourcesController",
+    "Method": "Create",
+    "RelativePath": "api/resources",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ResourcesService.Controllers.CreateResourceRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ResourcesService.Controllers.ResourcesController",
+    "Method": "GetById",
+    "RelativePath": "api/resources/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ResourcesService.Controllers.ResourcesController",
+    "Method": "Update",
+    "RelativePath": "api/resources/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "ResourcesService.Controllers.UpdateResourceRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ResourcesService.Controllers.ResourcesController",
+    "Method": "Delete",
+    "RelativePath": "api/resources/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
