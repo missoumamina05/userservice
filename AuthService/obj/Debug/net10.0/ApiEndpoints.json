@@ -1,0 +1,34 @@
+[
+  {
+    "ContainingType": "AuthService.Controllers.AuthController",
+    "Method": "GenerateToken",
+    "RelativePath": "api/auth/token",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AuthService.Models.TokenRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthService.Controllers.AuthController",
+    "Method": "ValidateToken",
+    "RelativePath": "api/auth/validate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "AuthService.Controllers.ValidateTokenRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
