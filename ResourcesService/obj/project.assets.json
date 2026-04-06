@@ -4311,23 +4311,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Utilisateur\\.nuget\\packages\\": {},
+    "C:\\Users\\misso\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\UQAR\\2026 Hiver\\Technologie du commerce électronique\\TP2\\Git Repo\\ResourcesService\\ResourcesService.csproj",
+      "projectUniqueName": "C:\\Users\\misso\\source\\repos\\userservice\\ResourcesService\\ResourcesService.csproj",
       "projectName": "ResourcesService",
-      "projectPath": "D:\\UQAR\\2026 Hiver\\Technologie du commerce électronique\\TP2\\Git Repo\\ResourcesService\\ResourcesService.csproj",
-      "packagesPath": "C:\\Users\\Utilisateur\\.nuget\\packages\\",
-      "outputPath": "D:\\UQAR\\2026 Hiver\\Technologie du commerce électronique\\TP2\\Git Repo\\ResourcesService\\obj\\",
+      "projectPath": "C:\\Users\\misso\\source\\repos\\userservice\\ResourcesService\\ResourcesService.csproj",
+      "packagesPath": "C:\\Users\\misso\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\misso\\source\\repos\\userservice\\ResourcesService\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Utilisateur\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\misso\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4336,6 +4336,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4354,7 +4355,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "10.0.100"
+      "SdkAnalysisLevel": "10.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -4398,7 +4399,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
