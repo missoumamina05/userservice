@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\UQAR\\2026 Hiver\\Technologie du commerce électronique\\TP2\\Git Repo\\AuthService\\AuthService.csproj": {}
+    "D:\\UQAR\\2026 Hiver\\Technologie du commerce électronique\\TP2\\TP2_CommerceElectronique-V.Alpha\\AuthService\\AuthService.csproj": {}
   },
   "projects": {
-    "D:\\UQAR\\2026 Hiver\\Technologie du commerce électronique\\TP2\\Git Repo\\AuthService\\AuthService.csproj": {
+    "D:\\UQAR\\2026 Hiver\\Technologie du commerce électronique\\TP2\\TP2_CommerceElectronique-V.Alpha\\AuthService\\AuthService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\UQAR\\2026 Hiver\\Technologie du commerce électronique\\TP2\\Git Repo\\AuthService\\AuthService.csproj",
+        "projectUniqueName": "D:\\UQAR\\2026 Hiver\\Technologie du commerce électronique\\TP2\\TP2_CommerceElectronique-V.Alpha\\AuthService\\AuthService.csproj",
         "projectName": "AuthService",
-        "projectPath": "D:\\UQAR\\2026 Hiver\\Technologie du commerce électronique\\TP2\\Git Repo\\AuthService\\AuthService.csproj",
+        "projectPath": "D:\\UQAR\\2026 Hiver\\Technologie du commerce électronique\\TP2\\TP2_CommerceElectronique-V.Alpha\\AuthService\\AuthService.csproj",
         "packagesPath": "C:\\Users\\Utilisateur\\.nuget\\packages\\",
-        "outputPath": "D:\\UQAR\\2026 Hiver\\Technologie du commerce électronique\\TP2\\Git Repo\\AuthService\\obj\\",
+        "outputPath": "D:\\UQAR\\2026 Hiver\\Technologie du commerce électronique\\TP2\\TP2_CommerceElectronique-V.Alpha\\AuthService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -57,6 +57,26 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[10.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[10.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[10.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.5, )"
             },
             "Microsoft.OpenApi": {
               "target": "Package",
