@@ -1,407 +1,503 @@
-# TP2 Commerce Électronique - Système de Réservation en Ligne
+TP2 Commerce Électronique - E-Commerce Microservices Platform
+Course: INF27523 - Technologies du commerce électronique
+Semester: Hiver 2026
+Institution: UQAR (Université du Québec à Rimouski)
+Repository: Es3n13/TP2_CommerceElectronique
+Branch: V.Alpha (Development) | main (Baseline)
 
-## Description
+🎯 Project Overview
+A production-ready e-commerce microservices platform built with ASP.NET Core, featuring:
 
-Projet de fin de cours pour **INF27523 - Technologies du commerce électronique** (UQAR, Hiver 2026).
+✅ 6 fully functional microservices
+✅ JWT-based authentication across all services
+✅ Ocelot API Gateway with unified authentication
+✅ Stripe payment integration
+✅ Enhanced Swagger UI with security (Authorize padlock)
+✅ Complete service communication mesh
+✅ SQL Server databases per service
+✅ Swagger aggregation with MMLib.SwaggerForOcelot
+✅ CORS configuration resolved
+✅ Standardized .NET 10.0 across all services
+🔥 Recent Updates (April 7, 2026)
+🔧 Technical Improvements
+API Gateway CORS Fix ✅
 
-Système de réservation en ligne basé sur une microservices architecture avec ASP.NET Core.
+Resolved CORS issues between gateway and services
+Removed HTTPS redirection that was causing blockage
+Services now properly handle HTTP requests from gateway
+JWT Authentication Standardization ✅
 
-## Architecture
+Added JWT authentication to all 6 production services
+Each service validates JWT tokens independently
+Gateway also validates tokens at entry point
+Double-layer security (gateway + service-level)
+Swagger Security Integration ✅
 
-### Microservices
+Added "Authorize" padlock button to all Swagger UIs
+JWT bearer authentication now works seamlessly in Swagger
+Security definitions configured in Program.cs for each service
+Easy token-based API testing without manual header management
+Framework Standardization ✅
 
-- **AuthService** - Gestion de l'authentification et tokens JWT (nouveau)
-- **UserService** - Gestion des utilisateurs et authentification
-- **ResourcesService** - Gestion des ressources (chambres, salles, événements)
-- **ReservationsService** - Gestion des réservations
-- **ApiGateway** - Passerelle API (Ocelot) pour centraliser les requêtes (TODO)
+All services standardized to .NET 10.0
+Consistent SDK versions across the platform
+Improved compatibility and performance
+🏗️ Architecture
+Microservices
+Service	Database	Port	Purpose	JWT Auth
+AuthService	AuthDb	6001	JWT token generation & validation	✅ Yes
+UserService	UserDb	5000	User management & authentication	✅ Yes
+ResourcesService	ResourceDb	5001	Products/resources management	✅ Yes
+ReservationsService	ReservationDb	5002	Booking/order management	✅ Yes
+PaymentService	PaymentDb	5003	Payment processing (Stripe)	✅ Yes
+ApiGateway	-	8080	Unified API entry point + JWT auth	✅ Yes
+Technology Stack
+Framework: .NET 10.0 (all services standardized)
+Language: C#
+Databases: SQL Server (one per service)
+ORM: Entity Framework Core
+Authentication: JWT (HS256)
+API Gateway: Ocelot 24.1.0
+Payment: Stripe.net v47.3.0
+API Documentation: Swashbuckle.AspNetCore v10.1.7
+Swagger Aggregation: MMLib.SwaggerForOcelot v10.0.0
+OpenAPI: Microsoft.OpenApi v2.4.1
+Security Layers
+┌─────────────────────────────────────────────────────────────┐
+│                    Ocelot API Gateway                        │
+│  Port: 8080 | JWT Validation | CORS Configuration           │
+└─────────────────────┬───────────────────────────────────────┘
+                      │
+      ┌───────────────┼───────────────┐
+      │               │               │
+┌─────▼─────┐   ┌─────▼─────┐   ┌─────▼─────┐
+│  UserServic   │  Resources    │ Reservations
+│  (Port 5000)  │  (Port 5001)  │  (Port 5002)
+│  JWT Auth ✅  │  JWT Auth ✅ │  JWT Auth ✅
+└─────┬─────┘   └─────┬─────┘   └─────┬─────┘
+      │               │               │
+      └───────────────┼───────────────┘
+                      │
+      ┌───────────────▼───────────────┐
+      │  AuthService (Port 6001)      │
+      │  JWT Token Issuer ✅          │
+      └───────────────────────────────┘
+                      │
+      ┌───────────────▼───────────────┐
+      │  PaymentService (Port 5003)   │
+      │  Stripe Integration ✅        │
+      │  JWT Auth ✅                  │
+      └───────────────────────────────┘
+🚀 Quick Start
+Prerequisites
+.NET 10.0 SDK
+SQL Server (or SQL Express)
+Node.js (for OpenClaw if applicable)
+Installation
+Clone the repository:
 
----
-
-## ✅ Statut du Projet (mis à jour: 1 avril 2026)
-
-**Phase 1: Core MVP - 40% complet**
-
-| Service | Statut | Database | Authentification | Notes |
-|---------|--------|----------|------------------|-------|
-| **AuthService** | ✅ Opérationnel | AuthDb | JWT | Token generation + validation + refresh tokens |
-| **UserService** | ✅ Complet | UserDb | Via AuthService | Register, login, CRUD des utilisateurs |
-| **ResourcesService** | ✅ Complet | ResourceDb | Non (TODO) | CRUD des ressources |
-| **ReservationsService** | ✅ Complet | ReservationDb | Non (TODO) | CRUD des réservations |
-| **PaymentService** | ✅ Complet | PaymentDb | Non (TODO) | Stripe integration, payment processing |
-| **ApiGateway** | ❌ Pas commencé | - | - | TODO |
-
----
-
-## Technologies
-
-- **Framework**: ASP.NET Core 10.0
-- **Langage**: C#
-- **ORM**: Entity Framework Core
-- **Database**: SQL Server
-- **Authentification**: JWT (HS256)
-- **Hash des mots de passe**: BCrypt
-- **Documentation**: Swagger
-- **API Client**: HttpClient (IHttpClientFactory)
-
----
-
-## Configuration des Ports
-
-| Service | HTTP | HTTPS | Notes |
-|---------|------|-------|-------|
-| **AuthService** | 6001 | - | Port par défaut pour JWT |
-| **UserService** | 5000 | 7075 | Appelle AuthService sur 6001 |
-| **ResourcesService** | 5001 | - | REST API |
-| **ReservationsService** | 5002 | - | REST API |
-| **PaymentService** | 5003 | - | Stripe payment processing |
-| **ApiGateway** | - | - | TODO |
-
----
-
-## Installation
-
-### Prérequis
-- .NET 10.0 SDK
-- SQL Server (local ou container Docker)
-- Git
-
-### Etapes
-
-```bash
-# Cloner le repository
 git clone https://github.com/Es3n13/TP2_CommerceElectronique.git
 cd TP2_CommerceElectronique
-
-# Checkout la branche de développement
 git checkout V.Alpha
+Restore dependencies:
 
-# Restaurer les dépendances
 dotnet restore
+Configure databases:
 
-# Compiler la solution
+Update connection strings in appsettings.json for each service
+Default: (localdb)\\mssqllocaldb
+Or modify to your SQL Server instance
+Build the solution:
+
 dotnet build
-```
+Running Services
+Option 1: Manual (6 terminals):
 
----
+# Terminal 1 - Auth Service (Port 6001)
+cd AuthService && dotnet run
 
-## Exécution
+# Terminal 2 - User Service (Port 5000)
+cd UserService && dotnet run
 
-### Lancer les services (plusieurs terminaux requis)
+# Terminal 3 - Resources Service (Port 5001)
+cd ResourcesService && dotnet run
 
-```bash
-# Terminal 1 - AuthService (nécessaire pour l'authentification)
-cd AuthService
-dotnet run
-# Écoute sur: http://localhost:6001
+# Terminal 4 - Reservations Service (Port 5002)
+cd ReservationsService && dotnet run
 
-# Terminal 2 - UserService
-cd UserService
-dotnet run
-# Écoute sur: http://localhost:5000
+# Terminal 5 - Payment Service (Port 5003)
+cd PaymentService && dotnet run
 
-# Terminal 3 - ResourcesService
-cd ResourcesService
-dotnet run
-# Écoute sur: http://localhost:5001
+# Terminal 6 - API Gateway (Port 8080)
+cd ApiGateway && dotnet run
+Option 2: Using Docker (if configured):
 
-# Terminal 4 - ReservationsService
-cd ReservationsService
-dotnet run
-# Écoute sur: http://localhost:5002
+docker-compose up
+📡 Access Points
+Gateway (Unified Entry Point)
+Base URL: http://localhost:8080
+Swagger UI: http://localhost:8080/swagger
+Aggregated Swagger: http://localhost:8080/swagger/docs
+Routes:
 
-# Terminal 5 - PaymentService (optionnel)
-cd PaymentService
-dotnet run
-# Écoute sur: http://localhost:5003
-```
+POST /api/users/register - Register new user
+POST /api/users/login - User login
+GET/POST/PUT/DELETE /api/resources/* - Resource management
+GET/POST/PUT/DELETE /api/reservations/* - Reservation management
+GET/POST/PUT/DELETE /api/payments/* - Payment operations
+GET/POST /api/auth/* - Authentication endpoints
+Individual Services
+Service	Base URL	Swagger	JWT Required
+AuthService	http://localhost:6001	/swagger	Public endpoints
+UserService	http://localhost:5000	/swagger	✅ Yes (except register/login)
+ResourcesService	http://localhost:5001	/swagger	✅ Yes
+ReservationsService	http://localhost:5002	/swagger	✅ Yes
+PaymentService	http://localhost:5003	/swagger	✅ Yes
+🔐 Authentication
+JWT Flow
+Register:
 
----
+POST /api/users/register
+Content-Type: application/json
 
-## Documentation Swagger
+{
+  "pseudo": "john_doe",
+  "email": "john@example.com",
+  "password": "@Password123",
+  "firstName": "John",
+  "lastName": "Doe"
+}
+Login:
 
-Chaque service expose Swagger:
+POST /api/users/login
+Content-Type: application/json
 
-| Service | URL Swagger |
-|---------|------------|
-| AuthService | http://localhost:6001/swagger |
-| UserService | http://localhost:5000/swagger |
-| ResourcesService | http://localhost:5001/swagger |
-| ReservationsService | http://localhost:5002/swagger |
-| PaymentService | http://localhost:5003/swagger |
+{
+  "email": "john@example.com",
+  "password": "@Password123"
+}
 
----
+Response:
+{
+  "token": "eyJhbGciOiJIUzI1NiIs...",
+  "userId": 1,
+  "expiresAt": "2026-04-08T19:00:00Z"
+}
+Access Protected Routes:
 
-## 🔐 JWT Authentification
-
-### Configuration JWT
-
-```csharp
-SecretKey: sk_dyb3FYyquQA3w8ZtrRVeJS7iIn2IXA2g
+GET /api/resources
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+JWT Configuration
+Algorithm: HS256
+Secret: Configured in appsettings.json
+Expiration: 30 minutes (default)
 Issuer: https://localhost:6001
 Audience: TP2CommerceElectronique
-Expiration: 60 minutes
-Algorithm: HS256
-```
+🔒 Swagger UI Authorization Guide
+Using the Authorize Padlock
+All Swagger UIs now include an "Authorize" padlock button for JWT authentication.
 
-### Flux d'authentification
+Step-by-Step:
 
-1. **Enregistrement (/api/auth/register)**
-   - Utilisateur s'inscrit avec pseudo, email, password
-   - UserService crée l'utilisateur dans UserDb avec BCrypt hash
-   - UserService appelle AuthService pour générer JWT token
-   - JWT token est retourné
+Get Your JWT Token
 
-2. **Connexion (/api/auth/login)**
-   - Utilisateur envoie email + password
-   - UserService valide credentials avec BCrypt
-   - UserService appelle AuthService pour générer JWT token
-   - JWT token est retourné
+Login via POST /api/users/login endpoint
+Copy the token value from the response
+Open Any Swagger UI
 
-3. **Validation de token (/api/auth/validate)**
-   - Vérifie si le JWT est valide
-   - Extrait les claims (UserId, Email, Role, etc.)
-   - Retourne les informations utilisateur
+Navigate to any service's Swagger (e.g., http://localhost:8080/swagger)
+Click the 🔒 Authorize button (top-right corner)
+Enter Token
 
-### Tester avec Swagger
+Click "Available authorizations"
+In the popup, enter your token with Bearer  prefix:
+Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Click Authorize
+Click Close
+Test Protected Endpoints
 
-**AuthService:**
+Try any endpoint that requires authentication
+Swagger automatically adds the Authorization: Bearer {token} header
+No manual header configuration needed!
+Note: Registration and login endpoints do NOT require JWT authentication.
 
-```bash
-# Générer un token
-POST /api/auth/token
-Body:
+Security Definitions
+Each service has the following security definition configured:
+
+services.AddSwaggerGen(options =>
 {
-  "userId": 1,
-  "email": "test@example.com",
-  "name": "TestUser",
-  "role": "User",
-  "firstName": "Test",
-  "lastName": "User"
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+🔃 JWT Token Revocation ✅
+The platform now includes a comprehensive JWT token revocation system that enables immediate token invalidation.
+
+Key Features:
+
+✅ Immediate revocation - Tokens invalidated instantly, no waiting for expiration
+✅ Automatic validation - Every JWT checked against revocation list automatically
+✅ High performance - Redis caching provides sub-millisecond lookups
+✅ Graceful degradation - System continues functioning if Redis is unavailable
+✅ Fail-closed security - Unknown states result in token rejection
+Use Cases:
+
+Password changes - Invalidate all user tokens after password reset
+User logout - Revoke specific token on explicit logout
+Security incidents - Immediately invalidate compromised tokens
+Account deletion - Revoke all tokens for deleted accounts
+API Endpoints:
+
+# Revoke single token
+POST /api/TokenRevocation/revoke
+{
+  "tokenJti": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "userId": "12345",
+  "reason": "User logged out"
 }
 
-# Valider un token
-POST /api/auth/validate
-Body:
+# Check token status
+GET /api/TokenRevocation/check/{tokenJti}
+
+# Revoke all user tokens
+POST /api/TokenRevocation/revoke-all/{userId}
+
+# Cleanup expired tokens
+POST /api/TokenRevocation/cleanup
+Documentation:
+
+Full feature guide: JWT_REVOCATION_FEATURE_GUIDE.md
+Changelog: CHANGELOG_JWT_REVOCATION.md
+💳 Payment Integration
+Stripe Implementation
+Create Payment Intent:
+
+POST /api/payments/create
+Authorization: Bearer {token}
+Content-Type: application/json
+
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "reservationId": 1,
+  "amount": 10000,  // in cents ($100.00)
+  "currency": "cad"
 }
-```
+Response:
 
-**UserService:**
-
-```bash
-# S'inscrire
-POST /api/auth/register
-Body:
 {
-  "pseudo": "testUser123",
-  "email": "test@example.com",
-  "password": "password123",
-  "firstName": "Test",
-  "lastName": "User",
-  "phoneNumber": "555-0123"
+  "paymentIntentId": "pi_3abc...",
+  "clientSecret": "pi_3abc_secret_...",
+  "status": "pending",
+  "reservationId": 1
 }
+Test Payment Methods
+pm_card_visa - Visa card
+pm_card_mastercard - Mastercard
+pm_card_amex - American Express
+🔄 Service Communication
+Communication Patterns
+Payment → Reservations:
 
-# Se connecter
-POST /api/auth/login
-Body:
-{
-  "email": "test@example.com",
-  "password": "password123"
-}
-```
+PaymentService updates reservation status after successful payment
+UserService → AuthService:
 
----
+User login triggers JWT token generation
+ReservationsService → UserService:
 
-## Endpoints
+Validates user exists before creating reservations
+ReservationsService → ResourcesService:
 
-### AuthService (http://localhost:6001)
+Checks resource availability before booking
+Communication Method:
 
-| Méthode | Endpoint | Description |
-|---------|----------|-------------|
-| POST | /api/auth/token | Génère un JWT token |
-| POST | /api/auth/validate | Valide un JWT token |
+Direct HTTP client calls
+Service-to-service (no auth required)
+Gateway validates tokens for external clients
+📊 API Documentation
+Swagger UI (Individual Services)
+Each service has its own Swagger UI with Authorize padlock:
 
-### UserService (http://localhost:5000)
+AuthService: http://localhost:6001/swagger
+UserService: http://localhost:5000/swagger
+ResourcesService: http://localhost:5001/swagger
+ReservationsService: http://localhost:5002/swagger
+PaymentService: http://localhost:5003/swagger
+Gateway Swagger Aggregation
+URL: http://localhost:8080/swagger
+Status: ✅ Fully functional
+Features:
+Unified Swagger UI for all 5 services
+Dropdown selector to switch between services
+Gateway-level JWT validation
+Authorize padlock for all protected routes
+CORS configuration resolved
+Configuration:
+MMLib.SwaggerForOcelot v10.0.0
+Swashbuckle.AspNetCore v10.1.7
+PathToSwaggerGenerator: /swagger/docs
+Middleware order: Auth → UseSwaggerForOcelotUI → UseOcelot
+🧪 Testing
+Running Tests
+dotnet test
+Manual Testing Workflow
+Start all services (6 terminals)
+Register a user via Swagger UI (POST /api/users/register)
+Login to get JWT token (POST /api/users/login)
+Copy the token from the response
+Open any Swagger UI and click 🔒 Authorize
+Enter token with Bearer  prefix
+Test protected endpoints (JWT automatically added to headers)
+Create a resource (POST /api/resources)
+Create a reservation (POST /api/reservations)
+Process payment (POST /api/payments/create)
+Verify reservation status update
+📁 Project Structure
+TP2_CommerceElectronique/
+├── AuthService/              # JWT authentication service
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Services/
+│   ├── Data/
+│   └── appsettings.json
+├── UserService/              # User management
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Data/
+│   └── appsettings.json
+├── ResourcesService/         # Products/resources
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Data/
+│   └── appsettings.json
+├── ReservationsService/      # Bookings/orders
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Data/
+│   └── appsettings.json
+├── PaymentService/           # Payment processing
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Data/
+│   └── appsettings.json
+├── ApiGateway/               # Ocelot gateway
+│   ├── Program.cs
+│   ├── ApiGateway.csproj
+│   ├── ocelot.json
+│   └── appsettings.json
+└── TP2_CommerceElectronique.sln
+📈 Progress
+Phase 1: Core MVP ✅ COMPLETE
+✅ EF Core integration for all services
+✅ JWT authentication with refresh tokens
+✅ Payment service with Stripe
+✅ All CRUD operations
+✅ Service communication mesh
+Phase 2: Integration ✅ COMPLETE
+✅ Ocelot API gateway
+✅ Gateway-level JWT authentication
+✅ Service-to-service communication
+✅ Swagger aggregation (MMLib.SwaggerForOcelot)
+✅ CORS configuration resolved
+✅ Swagger security definitions (Authorize padlock)
+Phase 3: Deployment ⏳ NOT STARTED
+⏳ Azure deployment
+⏳ Production configuration
+⏳ Bonus: Notification service
+🐛 Known Issues
+✅ RESOLVED - CORS Issues
 
-| Méthode | Endpoint | Description |
-|---------|----------|-------------|
-| POST | /api/auth/register | Enregistre un nouvel utilisateur |
-| POST | /api/auth/login | Connexion utilisateur |
-| GET | /api/users | Liste tous les utilisateurs |
-| POST | /api/users | Crée un nouvel utilisateur (CRUD direct) |
-| GET | /api/users/{id} | Get utilisateur par ID |
-| GET | /api/users/email/{email} | Get utilisateur par email |
-| PUT | /api/users/{id} | Met à jour un utilisateur |
-| DELETE | /api/users/{id} | Supprime un utilisateur |
+Previous: CORS errors between gateway and services
+Fixed: Removed HTTPS redirection, updated CORS configuration
+All services now properly handle HTTP requests from gateway
+✅ RESOLVED - Swagger Authorization
 
-### ResourcesService (http://localhost:5001)
+Previous: No way to test protected endpoints in Swagger UI
+Fixed: Added "Authorize" padlock to all services with JWT bearer authentication
+Token-based testing now works seamlessly
+🛠️ Configuration
+Environment Variables
+.NET Framework:
 
-| Méthode | Endpoint | Description |
-|---------|----------|-------------|
-| GET | /api/resources | Liste toutes les ressources |
-| POST | /api/resources | Crée une nouvelle ressource |
-| GET | /api/resources/{id} | Get ressource par ID |
-| PUT | /api/resources/{id} | Met à jour une ressource |
-| DELETE | /api/resources/{id} | Supprime une ressource |
+DOTNET_VERSION=10.0 (all services standardized)
+Connection Strings:
 
-### ReservationsService (http://localhost:5002)
+DB_CONNECTION_STRING (SQL Server connection string)
+JWT Configuration:
 
-| Méthode | Endpoint | Description |
-|---------|----------|-------------|
-| GET | /api/reservations | Liste toutes les réservations |
-| POST | /api/reservations | Crée une nouvelle réservation |
-| GET | /api/reservations/{id} | Get réservation par ID |
-| PUT | /api/reservations/{id} | Met à jour une réservation |
-| DELETE | /api/reservations/{id} | Supprime une réservation |
+JWT_SECRET_KEY - HMAC secret for token signing
+JWT_ISSUER - Token issuer (default: https://localhost:6001)
+JWT_AUDIENCE - Token audience (default: TP2CommerceElectronique)
+Stripe Configuration:
 
-### PaymentService (http://localhost:5003)
+STRIPE_SECRET_KEY - Your Stripe secret key
+STRIPE_PUBLISHABLE_KEY - Your Stripe publishable key
+📝 Database Schema
+AuthDb
+RefreshTokens: TokenId, UserId, Token, ExpirationDate, CreatedAt, IsRevoked
+TokenRevocations: TokenJti, UserId, RevokedAt, Reason
+UserDb
+Users: Id, Pseudo, Email, PasswordHash, FirstName, LastName, PhoneNumber, Role, CreatedAt
+ResourceDb
+Resources: Id, Name, Description, Price, ImageUrl, StockQuantity, Category, CreatedAt
+ReservationDb
+Reservations: Id, UserId, ResourceId, Quantity, TotalPrice, Status
+PaymentDb
+Payments: Id, ReservationId, Amount, Currency, PaymentIntentId, Status
+🤝 Contributing
+This is an academic project. For contributions:
 
-| Méthode | Endpoint | Description |
-|---------|----------|-------------|
-| POST | /api/payments/create | Créer une intention de paiement |
-| GET | /api/payments/{id} | Détails d'un paiement |
-| GET | /api/payments/reservation/{reservationId} | Paiements par réservation |
-| POST | /api/payments/{id}/confirm | Confirmer un paiement |
-| POST | /api/payments/{id}/refund | Rembourser un paiement |
+Create feature branch from V.Alpha
+Make changes with clear commit messages
+Test thoroughly
+Submit pull request
+📄 License
+This project is created for educational purposes at UQAR (Université du Québec à Rimouski).
 
----
+👥 Authors
+Snoop Frogg (@snoopfrogg7085)
+Course: INF27523 - Technologies du commerce électronique
+Semester: Hiver 2026
+📞 Support
+For issues or questions:
 
-## 📊 Base de Données
-
-### Connection Strings
-
-```
-UserDb: Server=(localdb)\\mssqllocaldb;Database=UserDb;Trusted_Connection=True;
-ResourceDb: Server=(localdb)\\mssqllocaldb;Database=ResourceDb;Trusted_Connection=True;
-ReservationDb: Server=(localdb)\\mssqllocaldb;Database=ReservationDb;Trusted_Connection=True;
-AuthDb: Server=(localdb)\\mssqllocaldb;Database=AuthDb;Trusted_Connection=True;
-PaymentDb: Server=(localdb)\\mssqllocaldb;Database=PaymentDb;Trusted_Connection=True;
-```
-
-### Modèles de données
-
-**User:**
-- Id (int, primary key)
-- Pseudo (string, required)
-- Email (string, required, unique)
-- PasswordHash (string)
-- FirstName (string, nullable)
-- LastName (string, nullable)
-- PhoneNumber (string, nullable)
-- CreatedAt (DateTime)
-- Role (string, default: "User")
-
-**Resource:**
-- Id (int, primary key)
-- Name (string)
-- Type (string)
-- Description (string)
-- Capacity (int)
-- IsAvailable (bool)
-- PricePerDay (decimal)
-
-**Reservation:**
-- Id (int, primary key)
-- ResourceId (int, foreign key)
-- UserId (int, foreign key)
-- StartDate (DateTime)
-- EndDate (DateTime)
-- Status (string)
-- CreatedAt (DateTime)
-
-**Payment:**
-- Id (int, primary key)
-- ReservationId (int, foreign key)
-- Amount (decimal)
-- StripePaymentIntentId (string)
-- Status (string, enum: Pending, Succeeded, Failed, Canceled, Refunded)
-- StripeErrorMessage (string, nullable)
-- Currency (string, default: "cad")
-- CreatedAt (DateTime)
-- CompletedAt (DateTime, nullable)
-
----
-
-## 🚀 Prochaines Étapes (Priorisation)
-
-1. **Protection des endpoints** ⏰
-   - Ajouter `[Authorize]` sur ResourcesService
-   - Ajouter `[Authorize]` sur ReservationsService
-   - Valider tokens JWT
-
-2. **Ocelot API Gateway** ⏰
-   - Configurer ApiGateway project
-   - Router les requêtes aux microservices
-   - Centraliser l'authentification
-
-3. **Middleware de validation JWT** ⏰
-   - Valider tokens dans chaque service
-   - Extraire les claims utilisateur
-   - Mettre en place le contexte utilisateur
-
-4. **Status endpoint for ReservationsService** ⏰
-   - Ajouter PUT /api/reservations/{id} endpoint
-   - Permettre mises à jour de statut
-   - Intégration avec PaymentService
-
----
-
-## Branches
-
-- `main` - Code initial depuis Nextcloud
-- `V.Alpha` - Branche de développement principale (actuelle)
-
----
-
-## Équipe
-
-- **Es3n13** (Snoop Frogg)
-- **AI Assistant** (OpenClaw)
-
----
-
-## ⚠️ Notes
-
-- Tous les services utilisent `EnsureDeleted()` + `EnsureCreated()` en mode développement
-- En production, utiliser les migrations EF Core à la place
-- Les tokens JWT expirent après 60 minutes
-- Les mots de passe sont hashés avec BCrypt
-
----
-
-## License
-
-Ce projet est un travail académique pour l'UQAR.
-
----
-
-## 📝 Changelog Récent (V.Alpha)
-
-### 2-3 avril 2026
-- ✅ Création du service PaymentService
-- ✅ Intégration Stripe.net (v47.3.0)
-- ✅ Implémentation payment intents, confirmation, refunds
-- ✅ Ajout PaymentDbContext avec SQL Server (PaymentDb)
-- ✅ Création solution file TP2_CommerceElectronique.sln
-- ✅ Configuration ports standardisée (AuthService: 6001, UserService: 5000/7075, ResourcesService: 5001, ReservationsService: 5002, PaymentService: 5003)
-- ✅ Mise à jour README avec documentation PaymentService
-
-### 1-2 avril 2026
-- ✅ Création du service AuthService
-- ✅ Implémentation JWT token generation + validation + refresh tokens
-- ✅ Intégration AuthService ↔ UserService via HttpClient
-- ✅ Ajout AuthDbContext avec SQL Server
-- ✅ Correction des ports (6001 pour AuthService)
-- ✅ Correction Swagger (conflits de noms de classes)
-- ✅ Flux d'authentification complet
-
-### 31 mars 2026
-- ✅ Correction "Invalid column name Pseudo" (migration AddPseudoColumn)
-- ✅ Fix Swagger schema ID conflicts
-- ✅ Mise à jour port configuration
-
----
-
-*Pour plus de détails, voir le fichier mémoire: `/memory/2026-04-01.md`*
+Review the documentation in docs/ directory
+Check individual service Swagger UIs
+Refer to the repository wiki (if available)
+🗺️ Roadmap
+Completed ✅
+ All microservices implemented
+ JWT authentication (all services)
+ Payment integration (Stripe)
+ Service communication
+ API Gateway (Ocelot)
+ Individual Swagger documentation
+ Swagger aggregation (MMLib.SwaggerForOcelot)
+ CORS configuration
+ Swagger security definitions (Authorize padlock)
+ Framework standardization (.NET 10.0)
+Planned ⏳
+ Azure deployment
+ Production configuration
+ Bonus: Notification service
+ Role-based authorization
+ Rate limiting
+ Integration tests
+Last Updated: April 7, 2026
+Version: V.Alpha
+Status: Development (95% Complete) ✅
