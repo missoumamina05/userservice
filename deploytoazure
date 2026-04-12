@@ -1,0 +1,35 @@
+name: Build and deploy ASP.Net Core app to Azure Web App - webappgithubaction
+
+on:
+  push:
+    branches:
+      - Emile
+
+env:
+  AZURE_WEBAPP_NAME: 'reservationenligne-aminaemile'
+  DOTNET_VERSION: '6.0.x'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore, Build, Publish
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet publish -c Release -o ./publish
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: ./publish
