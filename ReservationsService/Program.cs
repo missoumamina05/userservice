@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using ReservationsService.Data;
+using ResourcesService.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ReservationDbContext>(options =>
+builder.Services.AddDbContext<ResourceDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration.GetConnectionString("ReservationDbConnection")
+        builder.Configuration.GetConnectionString("ResourceDbConnection")
     )
 );
 
@@ -28,7 +28,7 @@ if (app.Environment.IsDevelopment())
 {
 	using (var scope = app.Services.CreateScope())
 	{
-		var context = scope.ServiceProvider.GetRequiredService<ReservationDbContext>();
+		var context = scope.ServiceProvider.GetRequiredService<ResourceDbContext>();
 		context.Database.EnsureCreated();
 	}
 }
